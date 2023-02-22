@@ -3,6 +3,15 @@ import { Link } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import register from "../assets/register.jpg";
 import OAuth from "../components/OAuth";
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    updateProfile,
+} from "firebase/auth";
+import { db } from "../firebase";
+import { serverTimestamp, setDoc, doc } from "firebase/firestore";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
     const [formData, setFormData] = useState({
@@ -10,6 +19,8 @@ export default function Register() {
         email: "",
         password: "",
     });
+
+    const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -21,6 +32,42 @@ export default function Register() {
             [e.target.id]: e.target.value,
         }));
     }
+
+    async function onSubmit(e) {
+        e.preventDefault();
+
+        try {
+            const auth = getAuth();
+            const userCredential = await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+            updateProfile(auth.currentUser, {
+                displayName: name,
+            });
+            const user = userCredential.user;
+            const formDataCopy = { ...formData };
+            delete formDataCopy.password;
+            formDataCopy.timestamp = serverTimestamp();
+
+            await setDoc(doc(db, "users", user.uid), formDataCopy);
+            Swal.fire({
+                icon: "success",
+                title: "Awesome 😇",
+                text: "You have registered a new account.",
+            });
+            navigate("/");
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong 😢",
+            });
+        }
+    }
+
     return (
         <section>
             <h1 className="text-2xl mt-6 text-center font-bold text-indigo-500">
@@ -35,7 +82,7 @@ export default function Register() {
                     />
                 </div>
                 <div className="w-full md:w-[50%] md:p-5">
-                    <form>
+                    <form onSubmit={onSubmit}>
                         <input
                             className="w-full px-4 py-2 text-gray-700 bg-white border-indigo-300 focus:border-indigo-500 rounded transition ease-in-out"
                             type="text"
