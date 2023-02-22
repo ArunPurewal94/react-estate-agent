@@ -25,7 +25,7 @@ export default function Navbar() {
                     <ul className="flex space-x-10">
                         <li
                             onClick={() => navigate("/")}
-                            className={`cursor-pointer hover:opacity-75 py-3 font-semibold text-indigo-500 border-b-[3px] border-b-transparent ${
+                            className={`cursor-pointer hover:opacity-75 py-3 font-semibold text-indigo-500 border-b-[3px] border-transparent ${
                                 pathMatchRoute("/") &&
                                 "text-indigo-800 border-b-indigo-500"
                             }`}>
@@ -33,7 +33,7 @@ export default function Navbar() {
                         </li>
                         <li
                             onClick={() => navigate("/offers")}
-                            className={`cursor-pointer hover:opacity-75 py-3 font-semibold text-indigo-500 border-b-[3px] border-b-transparent ${
+                            className={`cursor-pointer hover:opacity-75 py-3 font-semibold text-indigo-500 border-b-[3px] border-transparent ${
                                 pathMatchRoute("/offers") &&
                                 "text-indigo-800 border-b-indigo-500"
                             }`}>
@@ -41,7 +41,7 @@ export default function Navbar() {
                         </li>
                         <li
                             onClick={() => navigate("/login")}
-                            className={`cursor-pointer hover:opacity-75 py-3 font-semibold text-indigo-500 border-b-[3px] border-b-transparent ${
+                            className={`cursor-pointer hover:opacity-75 py-3 font-semibold text-indigo-500 border-b-[3px] border-transparent ${
                                 pathMatchRoute("/login") &&
                                 "text-indigo-800 border-b-indigo-500"
                             }`}>
