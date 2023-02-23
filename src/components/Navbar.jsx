@@ -17,7 +17,7 @@ export default function Navbar() {
                     <img
                         src={logo}
                         alt="Estate Agent Logo"
-                        className="h-[80px] cursor-pointer"
+                        className="h-[75px] cursor-pointer"
                         onClick={() => navigate("/")}
                     />
                 </div>
