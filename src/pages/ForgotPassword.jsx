@@ -2,12 +2,33 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import login from "../assets/login-image.jpg";
 import OAuth from "../components/OAuth";
+import Swal from "sweetalert2";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState("");
 
     function onChange(e) {
         setEmail(e.target.value);
+    }
+
+    async function onSubmit(e) {
+        e.preventDefault();
+        try {
+            const auth = getAuth();
+            await sendPasswordResetEmail(auth, email);
+            Swal.fire({
+                icon: "success",
+                title: "Congrats 😊 ",
+                text: "Password Reset link sent to email.",
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Could not send reset password 😢",
+            });
+        }
     }
 
     return (
@@ -20,7 +41,7 @@ export default function ForgotPassword() {
                     <img src={login} alt="key" className="w-full rounded-2xl" />
                 </div>
                 <div className="w-full md:w-[50%] md:p-5">
-                    <form>
+                    <form onSubmit={onSubmit}>
                         <input
                             className="w-full px-4 py-2 text-gray-700 bg-white border-indigo-300 focus:border-indigo-500 rounded transition ease-in-out"
                             type="email"
